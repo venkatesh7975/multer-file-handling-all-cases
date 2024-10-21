@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Uploads with Multer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      h2 {
+        margin-top: 30px;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-control-file {
+        display: block;
+        margin: 10px 0;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .uploaded-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .image-card {
+        background: #f8f8f8;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        width: calc(33.333% - 20px); /* Three images per row */
+        box-sizing: border-box;
+      }
+      .image-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>File Upload Examples</h1>
+
+      <!-- Form to upload a single file -->
+      <h2>Upload a Single File</h2>
+      <form action="/upload-single" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <input type="file" name="file" class="form-control-file" required />
+        </div>
+        <button type="submit">Upload Single File</button>
+      </form>
+
+      <!-- Form to upload multiple files (up to 3) -->
+      <h2>Upload Multiple Files (Max 3)</h2>
+      <form
+        action="/upload-multiple"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <input
+            type="file"
+            name="files"
+            multiple
+            class="form-control-file"
+            required
+          />
+        </div>
+        <button type="submit">Upload Multiple Files</button>
+      </form>
+
+      <!-- Form to upload different types of files (image and document) -->
+      <h2>Upload Different Files</h2>
+      <form
+        action="/upload-different-files"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label>Upload an Image (jpeg, jpg, png):</label>
+          <input type="file" name="image" class="form-control-file" required />
+        </div>
+        <div class="form-group">
+          <label>Upload Documents (Max 2 PDFs):</label>
+          <input
+            type="file"
+            name="document"
+            multiple
+            class="form-control-file"
+          />
+        </div>
+        <button type="submit">Upload Different Files</button>
+      </form>
+
+      <!-- Form to upload a single file with file size limit (5MB) -->
+      <h2>Upload a Single File (with Limit)</h2>
+      <form
+        action="/upload-with-limit"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <input type="file" name="file" class="form-control-file" required />
+        </div>
+        <button type="submit">Upload File with Size Limit</button>
+      </form>
+
+      <hr />
+
+      <!-- Display uploaded images -->
+      <h2>Uploaded Images</h2>
+      <div class="uploaded-images">
+        <% if (files.length === 0) { %>
+        <div class="col-12">
+          <p>No images uploaded yet.</p>
+        </div>
+        <% } else { %> <% files.forEach(function(file) { %>
+        <div class="image-card">
+          <img src="/uploads/<%= file %>" alt="<%= file %>" />
+          <p><%= file %></p>
+        </div>
+        <% }); %> <% } %>
+      </div>
+    </div>
+  </body>
+</html>
